@@ -1,6 +1,8 @@
 import "./App.css";
 import app from "./firebase.init";
 import { getAuth } from "firebase/auth";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 const auth = getAuth(app);
 function App() {
@@ -16,18 +18,36 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <form onSubmit={handleFormSubmit}>
-        <input onBlur={handleEmailBlur} type="email" placeholder="email" />{" "}
-        <br />
-        <input
-          onBlur={handlePasswordBlur}
-          type="password"
-          placeholder="password"
-        />{" "}
-        <br />
-        <input type="button" value="Login" />
-      </form>
+    <div>
+      <div className="registration w-50 mx-auto my-5">
+        <h2 className="text-primary">Please Register</h2>
+        <Form onSubmit={handleFormSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              onBlur={handleEmailBlur}
+              type="email"
+              placeholder="Enter email"
+            />
+            <Form.Text className="text-muted">
+              We'll never share your email with anyone else.
+            </Form.Text>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              onBlur={handlePasswordBlur}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Group>
+
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 }
