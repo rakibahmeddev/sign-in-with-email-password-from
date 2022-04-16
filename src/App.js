@@ -4,6 +4,8 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -48,12 +50,21 @@ function App() {
           console.log(user);
           setEmail(" ");
           setPassword(" ");
+          verifyEmail();
         })
         .catch((error) => {
           console.error(error);
           setError(error.message);
         });
     }
+
+    const verifyEmail = () => {
+      sendEmailVerification(auth.currentUser)
+        .then()
+        .then(() => {
+          console.log("Email verification sent");
+        });
+    };
 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -69,6 +80,16 @@ function App() {
 
     setValidated(true);
     setError(" ");
+  };
+
+  const handlePasswordReset = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        setError("Password reset email has been sent.");
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   };
 
   return (
@@ -94,7 +115,6 @@ function App() {
               Please provide a valid email.
             </Form.Control.Feedback>
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
@@ -108,7 +128,6 @@ function App() {
               Please provide a valid password.
             </Form.Control.Feedback>
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check
               onChange={handleRegisteredChange}
@@ -116,8 +135,13 @@ function App() {
               label="Already Registered?"
             />
           </Form.Group>
-
           <p className="text-danger">{error}</p>
+          {/* foeget password  */}
+          <Button onClick={handlePasswordReset} variant="link">
+            Reset your password.
+          </Button>{" "}
+          <br />
+          {/* submit button  */}
           <Button onClick={handleFormSubmit} variant="primary" type="submit">
             {registered ? "Login" : "Registered"}
           </Button>
